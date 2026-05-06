@@ -13,7 +13,7 @@ class KostController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Kost::with(['owner', 'rooms', 'facilities']);
+        $query = Kost::with(['owner', 'rooms.photos', 'facilities']);
         if ($request->city) $query->where('city', $request->city);
         if ($request->type) $query->where('type', $request->type);
         if ($request->min_price) $query->whereHas('rooms', fn($q) => $q->where('price', '>=', $request->min_price));
@@ -52,7 +52,7 @@ class KostController extends Controller
 
     public function show($id)
     {
-        $kost = Kost::with(['rooms', 'facilities'])->findOrFail($id);
+        $kost = Kost::with(['rooms.photos', 'facilities'])->findOrFail($id);
         return response()->json($kost);
     }
 
@@ -87,7 +87,7 @@ class KostController extends Controller
     public function myKosts(Request $request)
     {
         $user = $request->user();
-        $kosts = Kost::where('owner_id', $user->id)->with(['rooms', 'facilities'])->get();
+        $kosts = Kost::where('owner_id', $user->id)->with(['rooms.photos', 'facilities'])->get();
         return response()->json($kosts);
     }
 }
