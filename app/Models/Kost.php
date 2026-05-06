@@ -14,6 +14,8 @@ class Kost extends Model
 {
     use HasFactory;
 
+    protected $with = ['rooms', 'owner', 'facilities'];
+
     protected $fillable = [
         'owner_id', 'name', 'description', 'address', 'city', 'province', 'latitude', 'longitude', 'type',
     ];
