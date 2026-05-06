@@ -29,14 +29,14 @@ class SearchController extends Controller
         ", [$latitude, $longitude, $latitude])
         ->having('distance', '<', $radius)
         ->orderBy('distance', 'asc')
-        ->with(['owner', 'rooms', 'facilities'])
+        ->with(['owner', 'rooms.photos', 'facilities'])
         ->get();
         return response()->json($kosts);
     }
 
     public function filter(Request $request)
     {
-        $query = Kost::with(['owner', 'rooms', 'facilities']);
+        $query = Kost::with(['owner', 'rooms.photos', 'facilities']);
         if ($request->city) $query->where('city', $request->city);
         if ($request->type) $query->where('type', $request->type);
         if ($request->min_price) $query->whereHas('rooms', fn($q) => $q->where('price', '>=', $request->min_price));

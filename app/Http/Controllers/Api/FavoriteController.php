@@ -12,7 +12,7 @@ class FavoriteController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $favorites = $user->favorites()->with('kost')->get();
+        $favorites = $user->favorites()->with(['kost.owner', 'kost.rooms.photos', 'kost.facilities'])->get();
         return response()->json($favorites);
     }
 
